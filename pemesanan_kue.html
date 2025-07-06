@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Zuzuy's Cake - Pemesanan Kue Stroberi</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1582281298054-3b3af5e9ef89?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      padding: 40px;
+      color: #333;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      color: #c2185b;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .topping {
+      margin-top: 5px;
+    }
+
+    button {
+      background-color: #e91e63;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 15px;
+      width: 100%;
+    }
+
+    button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+
+    .result {
+      margin-top: 30px;
+      background-color: #fff0f5;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #e91e63;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>🎂 Zukhru's Cake</h1>
+    <p style="text-align: center;">Pesan kue stroberi manis dengan topping favoritmu!</p>
+
+    <div class="form-group">
+      <label>Nama Pemesan:</label>
+      <input type="text" id="namaPemesan" placeholder="Tulis nama kamu...">
+    </div>
+
+    <div class="form-group">
+      <label>Ukuran Kue (Harga):</label>
+      <select id="ukuranKue">
+        <option value="" disabled selected>-- Pilih ukuran kue --</option>
+        <option value="Mini">Mini - Rp40.000</option>
+        <option value="Sedang">Sedang - Rp55.000</option>
+        <option value="Besar">Besar - Rp75.000</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Pilih Topping Tambahan:</label>
+      <div class="topping">
+        <input type="checkbox" value="Coklat" class="topping"> Coklat 🍫<br>
+        <input type="checkbox" value="Wafer" class="topping"> Wafer 🧇<br>
+        <input type="checkbox" value="Keju" class="topping"> Keju 🧀<br>
+        <input type="checkbox" value="Almond" class="topping"> Almond 🌰<br>
+        <input type="checkbox" value="Oreo" class="topping"> Oreo 🍪
+      </div>
+    </div>
+
+    <button id="btnPesan" onclick="pesanKue()">Pesan Sekarang</button>
+
+    <div class="result" id="hasilPesanan"></div>
+  </div>
+
+  <script>
+    function getHarga(ukuran) {
+      if (ukuran === "Mini") return 40000;
+      if (ukuran === "Sedang") return 55000;
+      if (ukuran === "Besar") return 75000;
+      return 0;
+    }
+
+    function pesanKue() {
+      const namaInput = document.getElementById("namaPemesan");
+      const ukuranSelect = document.getElementById("ukuranKue");
+      const toppingCheckboxes = document.querySelectorAll(".topping");
+      const btn = document.getElementById("btnPesan");
+
+      const nama = namaInput.value.trim();
+      const ukuran = ukuranSelect.value;
+      let toppingTerpilih = [];
+
+      if (nama === "") {
+        alert("Harap isi nama pemesan.");
+        return;
+      }
+
+      if (ukuran === "") {
+        alert("Harap pilih ukuran kue terlebih dahulu.");
+        return;
+      }
+
+      toppingCheckboxes.forEach(cb => {
+        if (cb.checked) toppingTerpilih.push(cb.value);
+      });
+
+      const harga = getHarga(ukuran);
+      const hasil = `
+        <h3>🧾 Ringkasan Pesanan</h3>
+        <p><strong>Nama:</strong> ${nama}</p>
+        <p><strong>Ukuran Kue:</strong> ${ukuran}</p>
+        <p><strong>Harga:</strong> Rp${harga.toLocaleString()}</p>
+        <p><strong>Topping Tambahan:</strong> ${toppingTerpilih.length ? toppingTerpilih.join(", ") : "Tidak ada topping tambahan"}</p>
+        <p>✨ Terima kasih sudah memesan di <strong>Zukhru’s Cake</strong>! Pesananmu sedang diproses yaa 😊</p>
+      `;
+
+      document.getElementById("hasilPesanan").innerHTML = hasil;
+
+
+      namaInput.disabled = true;
+      ukuranSelect.disabled = true;
+      toppingCheckboxes.forEach(cb => cb.disabled = true);
+
+  
+      btn.disabled = true;
+      btn.innerText = "Pesanan Sudah Masuk ✅";
+    }
+  </script>
+
+</body>
+</html>
